@@ -1,11 +1,8 @@
-// --- script.js (Refactored and Organized) ---
-
 // ==================================
 // == Configuration & Global State ==
 // ==================================
 const CONFIG = {
-    // !!! IMPORTANT: Replace with your actual Zeabur node!!!
-    gasWebAppUrl: 'https://proxy-deepmedai.zeabur.app/proxy',
+    gasWebAppUrl: 'https://replace_with_your_link/proxy',
     reportCheckIntervalSeconds: 30,
     pdfOptions: {
         margin:       [0.5, 0.5, 0.5, 0.5], // inches [top, right, bottom, left]
@@ -53,11 +50,9 @@ function handleCredentialResponse(response) {
         state.currentUserProfile = jwtPayload;
         console.log("User profile:", { name: state.currentUserProfile.name, email: state.currentUserProfile.email }); // Log essential info
         updateLoginUI(true);
-        // You might want to store the login state (e.g., in localStorage)
-        // or send the token to your backend for verification/session creation here.
 
         // ✅ 在這裡！發送記錄 email 的請求
-        fetch('https://proxy-deepmedai.zeabur.app/proxy', {
+        fetch('https://replace_with_your_link/proxy/proxy', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
@@ -101,19 +96,6 @@ function updateLoginUI(isLoggedIn) {
     }
 }
 
-/* function showNotification(elements) {
-    if (elements.notificationBar) {
-         elements.notificationBar.classList.add('visible');
-         console.log("Notification shown.");
-    } else { console.warn("Notification bar element not found."); }
-} */
-
-/* function hideNotification(elements) {
-    if (elements.notificationBar) {
-        elements.notificationBar.classList.remove('visible');
-        console.log("Notification hidden.");
-    } else { console.warn("Notification bar element not found."); }
-} */
 function showModal(elements) {
     if (elements.modalOverlay) {
         elements.modalOverlay.classList.add('visible');
@@ -306,21 +288,7 @@ function handleSignOut(elements) {
     }
 
     updateLoginUI(false); // Update UI to show Sign In button
-
-    // *** 新增：登出時清除計時器 ***
-    // if (state.reportCheckIntervalId) {
-    //     clearInterval(state.reportCheckIntervalId);
-    //     state.reportCheckIntervalId = null;
-    //     console.log("Report check interval stopped on sign out.");
-    // }
-    // // 清空已知 ID，避免下次登入時顯示舊通知
-    // state.knownReadyIDs.clear();
-    // state.isInitialStatusLoad = true; // 重置初始加載狀態
-    // // 可能也需要隱藏通知欄
-    // hideNotification(elements);
-
     console.log("User signed out.");
-
 }
 
 // --- PDF Download Logic ---
@@ -399,21 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const elements = getUIElements(); // 獲取元素
 
     // --- DOM Element References ---
-    // Store elements in an object for easy access
-/*     const elements = {
-        notificationBar: document.getElementById('new-report-notification'),
-        viewReportButton: document.getElementById('view-report-button'),
-        modalOverlay: document.getElementById('report-modal-overlay'),
-        modalBody: document.getElementById('report-modal-body'),
-        closeModalButton: document.getElementById('close-report-modal'),
-        downloadPdfButton: document.getElementById('download-pdf-button'),
-        modalErrorMessage: document.getElementById('modal-error-message'),
-        retryReportButton: document.getElementById('retry-report-button'),
-        googleSigninDiv: document.getElementById('g_id_signin'),
-        signoutButton: document.getElementById('signout_button'),
-        header: document.querySelector("header") // Fixed: Select header tag directly
-    }; */
-
     // Basic check if essential elements exist
     if (!elements.modalOverlay || !elements.modalBody || !elements.closeModalButton) {
          console.error("Essential modal UI elements are missing! Report functionality may fail.");
@@ -468,17 +421,6 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.closeModalButton.addEventListener('click', () => hideModal(elements));
     }
 
-    // Modal Overlay Click (to close modal)
-    // if (elements.modalOverlay) {
-    //     elements.modalOverlay.addEventListener('click', (event) => {
-    //         // Only close if the click is directly on the overlay, not its children
-    //         if (event.target === elements.modalOverlay) {
-    //             console.log("Modal overlay clicked.");
-    //             hideModal(elements);
-    //         }
-    //     });
-    // }
-
     // Sign Out Button
     if (elements.signoutButton) {
         elements.signoutButton.addEventListener('click', () => handleSignOut(elements));
@@ -511,37 +453,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set initial UI state for login buttons
     updateLoginUI(false); // Assume not logged in initially
-
-// *** 修改：不在 DOMContentLoaded 時啟動計時器 ***
-/*     // Start the periodic check for new reports
-    if (CONFIG.gasWebAppUrl && !CONFIG.gasWebAppUrl.includes('YOUR_ACTUAL_GAS_WEB_APP_URL')) {
-        // Run the check once immediately on load
-        checkAnyNewReportWithStatus(elements);
-        // Then start the interval timer
-        state.reportCheckIntervalId = setInterval(() => checkAnyNewReportWithStatus(elements), CONFIG.reportCheckIntervalSeconds * 1000);
-        console.log(`Started checking for reports every ${CONFIG.reportCheckIntervalSeconds} seconds.`);
-    } else {
-        console.warn("!!! GAS Web App URL is not configured. Report checking is disabled. Please update CONFIG.gasWebAppUrl in script.js !!!");
-        // Optionally display a message to the user on the page itself
-        // alert("Application configuration error: Report checking is disabled.");
-    } */
-
-    // Add smooth scroll for internal links (if needed, CSS handles basic cases)
-    // This is often handled by CSS `scroll-behavior: smooth;` now
-    /*
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                e.preventDefault();
-                targetElement.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
-    console.log("Smooth scroll behavior added via JS (if needed).");
-    */
-
     console.log("Initialization complete (Manual Check Mode). Background click to close modal disabled.");
 
 }); // End of DOMContentLoaded
@@ -648,8 +559,3 @@ document.querySelectorAll('.footer-link').forEach(link => {
       scroll();
     }, 500);
   });
-  
-  
-
-// Removed the entire window.onload block as its logic is merged into DOMContentLoaded
-// console.log("Script file loaded."); // Log to confirm script file itself is loaded
