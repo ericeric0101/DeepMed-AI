@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 
 // ✅ 設定 CORS
 app.use(cors({
-  origin: 'https://deepmedai.zeabur.app',
+  origin: 'https://replace_with_your_web_domain',
   credentials: true
 }));
 
@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 // ✅ Proxy endpoint
 app.post('/proxy', async (req, res) => {
   try {
-    const googleAppsScriptUrl = 'https://script.google.com/macros/s/AKfycbzz4KKb1A3Dt9dFQb9txfjDMQLrMxmsiJ7NSJ5UWG_Rofst5CLdsYldrx1qd793A3N8/exec';
+    const googleAppsScriptUrl = 'https://script.google.com/macros/s/replace_with_your_GAS_web_url/exec';
 
     // ✅ 紀錄 email，如果是 recordEmail action
     const { action, idToken } = req.body;
