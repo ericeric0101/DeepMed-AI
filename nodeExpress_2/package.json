@@ -1,5 +1,5 @@
 {
-  "name": "zeabur-proxy-server",
+  "name": "replace_with_your_server_name",
   "version": "1.0.0",
   "description": "Node.js Proxy Server for Google Apps Script",
   "main": "index.js",
