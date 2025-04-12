@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeepMed AI</title>
+    <!-- SEO優化 -->
+    <meta name="description" content="DeepMed AI helps biomedical scientists focus on their research by providing instant, AI-powered report generation and insights." />
+    <meta name="keywords" content="DeepMed AI, biomedical research, AI assistant, scientific report, life science AI, research automation" />
+    <meta name="author" content="DeepMed AI Team" />  
+    <!-- Your Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Favicon -->
+    <link rel="icon" href="https://i.ibb.co/6Jnfmgyg/logo-recolored.png" type="image/png">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Sign-In (GSI) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#3A7CA5',
+              secondary: '#2D4F6A',
+              dark: '#123B60',
+              muted: '#A7C7E7', // Note: You have a lighter blue #A7C7E7 in CSS vars as well, ensure consistency
+            },
+            fontFamily: {
+              inter: ['Inter', 'sans-serif'],
+            },
+            keyframes: {
+              fadeUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+            },
+            animation: {
+              fadeUp: 'fadeUp 1.2s ease-out forwards',
+              pulseFast: 'pulse 1.5s infinite',
+            },
+            backdropBlur: {
+              xs: '2px', // Define xs if you use backdrop-blur-xs
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Removed inline style for .glass -->
+    <style>
+        /* Keep body font style here or move to style.css */
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+    <!-- Removed inline JS for counter and header scroll -->
+  </head>
+  <body class="bg-gradient-to-b from-blue-50 to-blue-100 text-dark">
+    
+    <!-- Fixed: Removed site-header class, JS will select 'header' -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- Logo 區 -->
+        <a href="#" class="flex items-center space-x-2">
+          <img src="https://i.ibb.co/6Jnfmgyg/logo-recolored.png" class="h-10 animate-pulseFast" alt="Logo" />
+          <span class="text-xl font-bold text-dark whitespace-nowrap">DeepMed AI</span>
+        </a>
+    
+        <!-- 漢堡選單按鈕：手機版顯示 -->
+        <button id="menu-toggle" class="text-2xl md:hidden focus:outline-none">
+          ☰
+        </button>
+    
+        <!-- 導航選單 -->
+        <nav id="nav-menu" class="hidden md:flex flex-col md:flex-row md:items-center md:space-x-4 text-sm font-semibold text-secondary mt-4 md:mt-0 space-y-2 md:space-y-0 w-full md:w-auto transition-all duration-300 ease-in-out">
+          <a href="#how" class="hover:text-primary menu-link">✨ Demo</a>
+          <a href="#pdf-upload" class="relative group hover:text-primary menu-link">
+            PDF Analysis
+            <span class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 text-xs text-secondary opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap px-2">
+              Coming soon
+            </span>
+          </a>
+          <a href="mailto:ckhuang0827@gmail.com" class="hover:text-primary menu-link">Contact</a>
+    
+          <!-- Google Sign-In -->
+          <div id="g_id_signin" class="g_id_signin"
+            data-type="standard"
+            data-size="large"
+            data-theme="filled_blue"
+            data-text="sign_in_with"
+            data-shape="pill"
+            data-logo_alignment="left">
+          </div>
+    
+          <div id="g_id_onload"
+            data-client_id="648912551849-eks542r11u54mh3htka83l75j01jnpr1.apps.googleusercontent.com"
+            data-callback="handleCredentialResponse"
+            data-auto_select="false"
+            style="display: none;">
+          </div>
+    
+          <!-- 手動查看報告按鈕 -->
+          <button id="manual-view-report-button" style="display: none;" class="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition text-sm">View My Report</button>
+    
+          <!-- Sign Out 按鈕 -->
+          <button id="signout_button" style="display: none;" class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition text-sm">Sign Out</button>
+        </nav>
+      </div>
+    </header>       
+
+    <!-- Fixed: Added text-center to parent div -->
+    <section class="min-h-[85vh] flex flex-col justify-center items-center text-center px-6 sm:pt-4 pb-4"> <!-- Added padding top to clear header initially -->
+      <div class="text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold leading-tight max-w-2xl mx-auto">
+          Focus on your experiment, let us do the report
+        </h1>
+        <p class="mt-4 text-lg text-secondary max-w-xl mx-auto">
+          AI-powered research assistant designed for biomedical scientists
+        </p>
+      </div>
+
+      <div class="overflow-hidden mt-6 h-12 relative w-full">
+        <div class="scrolling-prompts text-secondary text-sm absolute w-full text-center flex flex-col items-center space-y-2 md:space-y-4 lg:space-y-4">
+          <div>lncRNA used as gene therapy to treat myocardial infarction</div>
+          <div>Drug development progress for treatment of Alzheimer's disease</div>
+          <div>Epigenetic regulation in cancer progression</div>
+          <div>The role of microRNA in neurodegenerative diseases</div>
+          <div>CRISPR-Cas9 applications in rare genetic disorders</div>
+
+          <div>lncRNA used as gene therapy to treat myocardial infarction</div>
+          <div>Drug development progress for treatment of Alzheimer's disease</div>
+          <div>Epigenetic regulation in cancer progression</div>
+          <div>The role of microRNA in neurodegenerative diseases</div>
+          <div>CRISPR-Cas9 applications in rare genetic disorders</div>
+        </div>
+      </div>
+
+      <!-- <div class="mt-8">
+        <a
+          href="#how"
+          class="button-cta animate-fadeUp"
+          style="animation-delay: 0.2s;"  
+        >
+          Learn How It Works
+        </a>
+      </div> -->
+      <!-- 目前為止產生了多少報告
+      <div class="mt-10 text-center animate-fadeUp animation-delay-400" style="animation-delay: 0.4s;">
+        <p class="text-secondary font-semibold text-lg">Reports Generated</p>
+        <div id="counter" class="text-5xl font-extrabold text-primary mt-2">0</div>
+      </div>
+      -->
+    </section>
+
+    <section id="why" class="py-24 mb-12">
+      <div class="max-w-6xl mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold text-dark mb-12 animate-fadeUp">Why We Built This Tool</h2>
+        <div class="grid md:grid-cols-3 gap-10">
+          
+          <!-- 1. Save Precious Time -->
+          <div class="p-6 rounded-xl bg-white/60 backdrop-blur-xs shadow-lg hover:shadow-xl transition animate-fadeUp" style="animation-delay: 0s;">
+            <img src="image/clock.svg" alt="Save Precious Time Icon" class="mx-auto w-12 h-12 text-primary mb-4" />
+            <h3 class="font-semibold text-xl text-secondary mb-2">Save Precious Time</h3>
+            <p class="text-dark/70">
+              Reduce time spent on repetitive tasks like searching, reading, and summarizing papers.
+            </p>
+          </div>
+    
+          <!-- 2. Foster Innovation -->
+          <div class="p-6 rounded-xl bg-white/60 backdrop-blur-xs shadow-lg hover:shadow-xl transition animate-fadeUp" style="animation-delay: 0.2s;">
+            <img src="image/bulb.svg" alt="Foster Innovation Icon" class="mx-auto w-12 h-12 text-primary mb-4" />
+            <h3 class="font-semibold text-xl text-secondary mb-2">Foster Innovation</h3>
+            <p class="text-dark/70">
+              Quickly gain insights across disciplines and uncover novel cross-disciplinary connections.
+            </p>
+          </div>
+    
+          <!-- 3. Your Privacy Matters -->
+          <div class="p-6 rounded-xl bg-white/60 backdrop-blur-xs shadow-lg hover:shadow-xl transition animate-fadeUp" style="animation-delay: 0.4s;">
+            <img src="image/lock.svg" alt="Your Privacy Matters Icon" class="mx-auto w-12 h-12 text-primary mb-4" />
+            <h3 class="font-semibold text-xl text-secondary mb-2">Your Privacy Matters</h3>
+            <p class="text-dark/70">
+              We don’t store sensitive data or ideas. Your intellectual property is always safe.
+            </p>
+          </div>
+    
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="pt-20 scroll-mt-10 mb-12">
+      <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-dark mb-4">See DeepMed AI in Action</h2>
+    
+        <!-- Demo -->
+        <div class="relative mx-auto w-full max-w-3xl aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe
+            src="https://app.supademo.com/embed/cm9b59zxw00n2y60jx2sxlmrg?embed_v=2"
+            loading="lazy"
+            title="DeepMed AI Demo"
+            frameborder="0"
+            allow="clipboard-write"
+            allowfullscreen
+            class="absolute top-0 left-0 w-full h-full"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Removed Bottom Banner (duplicate CTA)
+    <div class="fixed bottom-0 inset-x-0 z-50 bg-white/80 backdrop-blur-md shadow-md">...</div>
+    -->
+
+    <footer class="bg-primary text-white py-6 text-sm mt-24">
+      <div class="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
+    
+        <!-- 左側版權 -->
+        <p class="text-sm text-white">© 2025 DeepMed AI. All rights reserved.</p>
+        
+        <!-- 右側法律連結 -->
+        <div class="space-x-4">
+          <a href="javascript:void(0)" class="footer-link hover:underline" data-modal="about-modal">About</a>
+          <a href="javascript:void(0)" class="footer-link hover:underline" data-modal="privacy-modal">Privacy Policy</a>
+          <a href="javascript:void(0)" class="footer-link hover:underline" data-modal="terms-modal">Terms of Service</a>
+        </div>
+    
+      </div>
+    </footer>
+
+    <div id="about-modal" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close-button" onclick="closeModal('about-modal')">×</button>
+        <h2 class="text-2xl font-bold text-dark mb-4">About</h2>
+        <p class="mb-4 leading-relaxed">
+          At DeepMed AI, we empower biomedical scientists to focus on what truly matters — their research.
+          Our mission is to simplify the process of data interpretation and report generation through AI-powered solutions.
+        </p>
+    
+        <p class="mb-4 leading-relaxed">
+          Designed specifically for life science professionals, DeepMed AI helps you transform your research questions
+          into comprehensive, structured reports in just a few clicks. Whether you’re exploring gene therapy targets
+          or reviewing the latest studies, our assistant streamlines your workflow and delivers insights efficiently.
+        </p>
+    
+        <p class="mb-6 leading-relaxed">
+          We believe in the value of your time and intellectual property. That’s why DeepMed AI prioritizes privacy and
+          security, ensuring that your data remains yours.
+        </p>
+    
+        <h3 class="text-xl font-semibold mb-3 text-dark">What We Offer</h3>
+        <ul class="list-disc pl-6 space-y-2 text-dark/80">
+          <li>Instant AI-assisted report generation</li>
+          <li>Simple chat-based query system</li>
+          <li>Google Sign-In for secure access</li>
+          <li>Exportable PDF reports for easy sharing</li>
+        </ul>
+    
+        <p class="mt-6 leading-relaxed">
+          Let DeepMed AI handle the reporting, so you can focus on discovery.
+        </p>
+      </div>
+    </div>
+    
+    <div id="privacy-modal" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close-button" onclick="closeModal('privacy-modal')">×</button>
+        <h2 class="text-2xl font-bold text-dark mb-4">Privacy Policy</h2>
+        <p class="mb-4 text-dark/80">Effective Date: 10.04.2025<br>Last Updated: 10.04.2025</p>
+        <h3 class="text-lg font-bold text-dark mb-2">1. Introduction</h3>
+        <p class="mb-4 text-dark/80">
+          Welcome to DeepMed AI ("we," "us," or "our"). We are committed to protecting your privacy and handling your personal data transparently and securely. This Privacy Policy explains how we collect, use, share, and protect your information when you use our website and services (collectively, the "Service").
+        </p>
+        <p class="mb-4 text-dark/80">
+          <strong>Our contact information is:</strong><br>
+          Service Name: DeepMed AI<br>
+          Contact Email: ckhuang0827@gmail.com
+        </p>
+        <p class="mb-4 text-dark/80">By using our Service, you agree to the collection and use of information in accordance with this policy.</p>
+
+        <h3 class="text-lg font-bold text-dark mb-2">2. Information We Collect</h3>
+        <p class="mb-4 text-dark/80">We collect several types of information for various purposes to provide and improve our Service to you:</p>
+        <ul class="list-disc list-inside mb-4 text-dark/80">
+          <li><strong>Information You Provide via Google Sign-In:</strong> We receive certain profile information from your Google account, including:
+            <ul class="list-disc list-inside ml-6">
+              <li>Your Email Address (for account identification and communication)</li>
+              <li>Your Name (to personalize your experience)</li>
+              <li>Your Google User ID (a unique identifier assigned by Google)</li>
+            </ul>
+          </li>
+          <li><strong>Information You Provide via Chat Interaction:</strong>
+            <ul class="list-disc list-inside ml-6">
+              <li>Research Topics/Prompts: Text and queries you enter to request report generation.</li>
+              <li>Session ID: Generated to associate with your report request.</li>
+            </ul>
+          </li>
+          <li><strong>Report Content (Output):</strong> Temporarily stored in our backend (Google Sheets).</li>
+          <li><strong>Usage Data & Cookies:</strong> Automatically collected data such as log data and cookies.</li>
+        </ul>
+
+        <h3 class="text-lg font-bold text-dark mb-2">3. Cookie Usage</h3>
+        <p class="mb-4 text-dark/80">Cookies are small files stored on your device. We use cookies to track the activity on our Service, hold certain information, and improve and analyze our Service.</p>
+        <p class="mb-4 text-dark/80">For more details, please refer to the full policy.</p>
+
+        <h3 class="text-lg font-bold text-dark mb-2">4. How We Use Your Data</h3>
+        <p class="mb-4 text-dark/80">We use your data to provide and maintain our Service, manage your account, process your report requests, and improve the Service.</p>
+
+        <h3 class="text-lg font-bold text-dark mb-2">5. Data Sharing and Disclosure</h3>
+        <p class="mb-4 text-dark/80">We do not sell your personal data. Data is only shared with trusted service providers (like Google and n8n), or when required by law.</p>
+
+        <h3 class="text-lg font-bold text-dark mb-2">6. Data Retention</h3>
+        <p class="mb-4 text-dark/80">We retain your data as long as necessary to provide the Service or as required by law. You can request data deletion at any time.</p>
+
+        <h3 class="text-lg font-bold text-dark mb-2">7. Data Security</h3>
+        <p class="mb-4 text-dark/80">We use secure communication protocols and Google Cloud infrastructure, but no method of transmission over the internet is 100% secure.</p>
+
+        <h3 class="text-lg font-bold text-dark mb-2">8. Your Data Protection Rights</h3>
+        <ul class="list-disc list-inside mb-4 text-dark/80">
+          <li>Right to access, rectify, or erase your data</li>
+          <li>Right to restrict or object to processing</li>
+          <li>Right to data portability</li>
+          <li>Right to withdraw consent at any time</li>
+        </ul>
+        <p class="mb-4 text-dark/80">To exercise your rights, please contact us at ckhuang0827@gmail.com.</p>
+
+        <h3 class="text-lg font-bold text-dark mb-2">9. Links to Other Sites</h3>
+        <p class="mb-4 text-dark/80">Our Service may contain links to other sites. We are not responsible for their privacy practices.</p>
+
+        <h3 class="text-lg font-bold text-dark mb-2">10. Changes to This Privacy Policy</h3>
+        <p class="mb-4 text-dark/80">We may update this policy. Changes are effective when posted on this page.</p>
+
+        <h3 class="text-lg font-bold text-dark mb-2">11. Contact Us</h3>
+        <p class="mb-4 text-dark/80">If you have any questions about this Privacy Policy, please contact us:<br>
+        By email: ckhuang0827@gmail.com</p>
+      </div>
+    </div>
+    
+    <div id="terms-modal" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close-button" onclick="closeModal('terms-modal')">×</button>
+        <h2 class="text-2xl font-bold text-dark mb-4">Terms of Service</h2>
+        <p class="mb-4 text-dark/80">Effective Date: 10.04.2025<br>Last Updated: 10.04.2025</p>
+        <p class="mb-6 text-dark/80">
+          Welcome to DeepMed AI ("we," "us," or "our")! These Terms of Service ("Terms") govern your use of our website and services (collectively, the "Service"). Please read these Terms carefully before using the Service. By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.
+        </p>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">1. Service Description</h3>
+        <p class="mb-4 text-dark/80">
+          DeepMed AI provides an AI-powered research assistant designed to help biomedical scientists with report generation and related tasks. Users can interact with our chat assistant, submit research topics, receive a unique Request ID, and retrieve generated reports using their Request ID after authenticating via Google Sign-In.
+        </p>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">2. Account and Access</h3>
+        <ul class="list-disc list-inside mb-4 text-dark/80">
+          <li><strong>Authentication:</strong> Access requires Google Sign-In. Please ensure accurate information during sign-in.</li>
+          <li><strong>Responsibility:</strong> You are responsible for maintaining the confidentiality of your Google account credentials.</li>
+        </ul>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">3. User Responsibilities and Conduct</h3>
+        <p class="mb-2 text-dark/80">You agree to use the Service lawfully and not to:</p>
+        <ul class="list-disc list-inside mb-4 text-dark/80">
+          <li>Violate any laws or regulations.</li>
+          <li>Upload or distribute harmful, illegal, or objectionable content.</li>
+          <li>Infringe upon intellectual property rights.</li>
+          <li>Attempt unauthorized access to the Service.</li>
+          <li>Engage in conduct that restricts others' use or enjoyment of the Service.</li>
+          <li>Overload the system with excessive requests.</li>
+        </ul>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">4. Intellectual Property</h3>
+        <p class="mb-4 text-dark/80">
+          DeepMed AI retains ownership of all original content and services. You retain ownership of your submitted research data, while granting us a limited license to process it for Service delivery.
+        </p>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">5. Disclaimers and Limitation of Liability</h3>
+        <p class="mb-2 text-dark/80"><strong>"AS IS" Basis:</strong> The Service is provided without warranties.</p>
+        <p class="mb-2 text-dark/80"><strong>No Warranty:</strong> We do not guarantee that the Service will be error-free or uninterrupted.</p>
+        <p class="mb-2 text-dark/80"><strong>Limitation of Liability:</strong> We are not liable for indirect, incidental, or consequential damages arising from your use of the Service.</p>
+        <p class="mb-4 text-dark/80"><strong>AI Output:</strong> You acknowledge AI-generated content may contain inaccuracies and agree to verify critical information independently.</p>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">6. Third-Party Services</h3>
+        <p class="mb-4 text-dark/80">
+          Our Service uses third-party services like Google Sign-In and n8n Chat. Their terms apply separately.
+        </p>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">7. Termination</h3>
+        <p class="mb-4 text-dark/80">
+          We may terminate your access to the Service without notice for violations of these Terms. You may also discontinue use at any time.
+        </p>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">8. Modifications to Terms</h3>
+        <p class="mb-4 text-dark/80">
+          We may revise these Terms at any time. Material changes will be announced at least 30 days in advance. Continued use of the Service constitutes acceptance of the revised Terms.
+        </p>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">9. Governing Law and Dispute Resolution</h3>
+        <p class="mb-4 text-dark/80">
+          These Terms are governed by the laws of Germany. Any disputes will be resolved through binding arbitration in Germany.
+        </p>
+      
+        <h3 class="text-lg font-bold text-dark mb-2">10. Contact Us</h3>
+        <p class="mb-4 text-dark/80">
+          If you have any questions, please contact us at: ckhuang0827@gmail.com
+        </p>
+      </div>
+    </div>
+    
+
+    <!-- Report Modal -->
+    <div id="report-modal-overlay" class="modal-overlay">
+      <div id="report-modal-content" class="modal-content">
+        <button id="close-report-modal" class="modal-close-button">×</button>
+        <h2>Report Content</h2>
+        <!-- == 新增：錯誤訊息顯示區域 == -->
+        <div id="modal-error-message" class="text-red-600 my-2 font-semibold" style="display: none;">
+          <!-- 錯誤訊息會顯示在這裡 -->
+        </div>
+        <!-- ========================== -->
+        <button id="download-pdf-button" class="modal-action-button">Download as PDF</button>
+        <hr class="my-4"> <!-- Added margin to hr -->
+        <div id="report-modal-body" class="report-body">
+          <!-- Report content will be injected here -->
+        </div>
+        <div id="markdown-preview" class="markdown-body mt-4">
+          <!-- Rendered Markdown content will appear here -->
+        </div>
+        <button id="retry-report-button" class="modal-action-button" style="display: none; background-color: orange;">Try Again</button>
+      </div>
+    </div>
+    <script>
+      // Function to render Markdown content
+      function renderMarkdown(content) {
+        const markdownPreview = document.getElementById('markdown-preview');
+        markdownPreview.innerHTML = marked(content);
+      }
+
+      // Example usage: Call this function with Markdown content
+      // renderMarkdown('# Example Markdown\nThis is **bold** text and this is *italic* text.');
+    </script>
+
+    <!-- n8n Chat Widget -->
+    <script>
+        window.ChatWidgetConfig = {
+            webhook: {
+                url: 'https://ehmj2527.zeabur.app/webhook/f2fd7130-723d-4ebb-92e4-325b2077c0eb/chat',
+                route: 'general'
+            },
+            branding: {
+                logo: 'https://i.ibb.co/6Jnfmgyg/logo-recolored.png',
+                name: 'DeepMed AI assistant',
+                welcomeText: 'Hi 👋, welcome to the DeepMed AI Assistant',
+                responseTimeText: 'Report ready with several questions'
+            },
+            style: {
+                primaryColor: '#3A7CA5',
+                secondaryColor: '#2D4F6A',
+                position: 'right',
+                backgroundColor: '#ffffff',
+                fontColor: '#123B60'
+            }
+         };
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/WayneSimpson/n8n-chatbot-template@ba944c3/chat-widget.js"></script>
+
+   <!-- External JS Libraries -->
+   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+   <!-- Your Custom Script -->
+   <script src="script.js"></script>
+
+  </body>
+</html>
