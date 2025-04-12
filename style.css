@@ -1,0 +1,569 @@
+/* --- Global Styles & Variables --- */
+:root {
+    /* Updated Color Palette */
+    --color-primary-dark: #123B60; /* Dark Blue */
+    --color-secondary: #2D4F6A;   /* Muted Dark Blue */
+    --color-accent: #3A7CA5;      /* Medium Blue */
+    --color-background-light: #A7C7E7; /* Light Blue (Muted in Tailwind config) - Ensure consistency */
+    --color-background-warm: #f0f4f8;
+
+    --color-text-light: #ffffff;
+    --color-text-dark: #123B60; /* Main text */
+    --color-text-muted: #2D4F6A; /* Secondary text - Ensure this matches Tailwind's 'text-secondary' usage */
+
+    /* Gradient Variables */
+    --gradient-start: #E0F2FE; /* Lighter blue start (Tailwind blue-50) */
+    --gradient-end: #BFDBFE;   /* Light blue end (Tailwind blue-200) */
+    /* --- OR --- use the original gradient if preferred: */
+    /* --gradient-start: #ffffff; */
+    /* --gradient-end: #e0eaf3; */
+
+
+    --font-primary: 'Inter', sans-serif;
+    --base-font-size: 16px;
+    --header-height: 70px;
+    /* Assuming no separate announcement bar in final HTML structure */
+    /* --announcement-bar-height: 40px; */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    /* Adjust scroll-padding if you have FIXED elements other than the header */
+    /* Just the header */
+     scroll-padding-top: calc(var(--header-height) + 10px); /* 10px buffer */
+    /* If you re-add an announcement bar: */
+    /* scroll-padding-top: calc(var(--header-height) + var(--announcement-bar-height) + 10px); */
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: var(--base-font-size);
+    line-height: 1.7;
+    color: var(--color-text-dark);
+    /* Use Tailwind's gradient classes in <body> tag */
+    /* background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end)); */
+    min-height: 100vh;
+    /* Padding top adjusted for header only */
+    padding-top: var(--header-height);
+}
+
+h1, h2, h3 {
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.75em;
+}
+h1 { font-size: 2.8rem; font-weight: 700; }
+h2 { font-size: 2rem; text-align: center; margin-bottom: 1.5em; }
+h3 { font-size: 1.25rem; color: var(--color-secondary); margin-bottom: 0.5em; }
+
+p { margin-bottom: 1em; color: var(--color-text-muted); /* Default paragraphs to muted color */ }
+p.text-dark { color: var(--color-text-dark); } /* Utility class if needed */
+
+a { color: var(--color-accent); text-decoration: none; transition: color 0.3s ease; }
+a:hover { color: var(--color-secondary); }
+
+img { max-width: 100%; height: auto; display: block; }
+ul, ol { padding-left: 20px; } /* Keep default list padding */
+/* Removed Tailwind's list-decimal/list-disc to avoid conflict with this */
+section ol { list-style: none; padding-left: 0; } /* Remove default style specifically for the steps list if using custom counters/layout */
+
+.container { max-width: 1140px; margin: 0 auto; padding: 0 20px; } /* Keep basic container or rely on Tailwind max-w-* mx-auto px-* */
+
+/* --- Header (Keep custom styles if needed beyond Tailwind) --- */
+/* .site-header defined in HTML via Tailwind classes like 'fixed', 'top-0' etc. */
+/* Keep this if you need specific non-Tailwind header styles */
+/* For example, if Tailwind doesn't cover a specific transition or border */
+header {
+    /* Example: Add a specific transition not easily done in Tailwind */
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+     /* Fixed height for scroll-padding calculation */
+     height: var(--header-height);
+     /* Tailwind handles fixed, top, width, z-index */
+     border-bottom: 1px solid transparent; /* Start transparent */
+}
+header.shadow-md { /* Style applied by JS on scroll */
+    border-bottom-color: #e5e7eb; /* Example border color for scrolled state */
+}
+
+/* Logo styling (if needed beyond Tailwind) */
+.logo-link { /* Assuming the <a> tag wrapping logo/text has this class */
+    /* Tailwind handles flex, items-center, space-x */
+}
+.logo-image { /* Assuming <img> tag has this class */
+     height: 40px; /* Example fixed height */
+     /* Tailwind handles height (h-10), animation */
+}
+.logo-text { /* Assuming <span> tag has this class */
+    /* Tailwind handles font-size, weight, color */
+}
+
+
+/* --- Hero Section (Keep custom styles if needed) --- */
+.hero-section {
+     min-height: max(500px, calc(100vh - var(--header-height)));
+     padding-top: 4rem;
+     padding-bottom: 4rem;
+}
+
+/* --- Sections (General Padding/Margin) --- */
+section {
+    padding-top: 5rem;    /* py-20 */
+    padding-bottom: 5rem; /* py-20 */
+}
+/* Override for specific sections if needed */
+#hero { padding-top: 4rem; padding-bottom: 4rem; }
+
+
+/* --- Why Section (Custom styles for the items if needed) --- */
+/* .feature-item is styled by Tailwind: p-6, rounded-xl, bg-white/60, backdrop-blur-xs, shadow-lg etc. */
+.feature-item {
+    /* Add custom transition if Tailwind's isn't sufficient */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.feature-item:hover {
+    /* Tailwind handles hover:shadow-xl */
+    transform: translateY(-5px); /* Keep custom transform */
+}
+.feature-icon { /* Assuming the emoji div has this class */
+     /* Tailwind handles text-4xl, mb-4 */
+}
+
+/* --- How It Works Section (Custom list styling) --- */
+/* Target the <ol> within the #how section specifically */
+#how ol {
+    list-style: none;
+    padding-left: 0;
+    max-width: 700px; /* Keep max-width if desired */
+    margin: 40px auto 0 auto;
+    counter-reset: steps-counter;
+}
+#how ol li {
+    position: relative;
+    padding: 15px 15px 15px 50px; /* Adjust padding for counter */
+    margin-bottom: 20px;
+    /* Tailwind handles bg, rounded, shadow */
+    /* background-color: #fff; */ /* Provided by Tailwind bg-white */
+    /* border-radius: 10px; */    /* Provided by Tailwind rounded-lg */
+    /* box-shadow: 0 4px 15px rgba(45, 79, 106, 0.06); */ /* Provided by Tailwind shadow-md/lg */
+    border-left: 4px solid var(--color-accent); /* Keep custom border */
+}
+#how ol li::before {
+    counter-increment: steps-counter;
+    content: counter(steps-counter);
+    position: absolute;
+    left: -15px; /* Position relative to padding */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--color-accent);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(58, 124, 165, 0.4);
+}
+#how ol li strong {
+    color: var(--color-primary-dark);
+    display: block;
+    margin-bottom: 5px;
+}
+#how ol li em {
+    font-style: normal;
+    color: var(--color-text-muted);
+    font-size: 0.9em;
+    display: block;
+    margin-top: 5px;
+}
+
+
+/* --- Footer (Keep custom styles if needed) --- */
+footer {
+     /* Tailwind handles bg-primary, text-white, py, text-center, text-sm, mt */
+}
+
+/* ========================================= */
+/* == Notification Bar & Modal Styles == */
+/* ========================================= */
+
+/* --- Modal --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1003; /* Highest */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+    padding: 20px; /* Add padding for smaller screens */
+}
+.modal-overlay.visible {
+     opacity: 1;
+     visibility: visible;
+     transition: opacity 0.3s ease;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    max-width: 90%; /* Use percentage for responsiveness */
+    width: 700px;   /* Max width */
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(0.95); /* Start slightly smaller */
+    transition: transform 0.3s ease;
+}
+.modal-overlay.visible .modal-content { transform: scale(1); }
+.modal-content h2 {
+    margin-top: 0; margin-bottom: 15px;
+    color: var(--color-primary-dark);
+    text-align: left; font-size: 1.5rem; /* Adjust size */
+}
+.modal-close-button {
+    position: absolute; top: 15px; right: 20px;
+    background: none; border: none;
+    font-size: 2rem; color: #aaa; cursor: pointer;
+    line-height: 1; padding: 0;
+}
+.modal-close-button:hover { color: #333; }
+.report-body { margin-top: 20px; }
+/* Styles for content within report-body (like Markdown output) */
+.report-body h1, .report-body h2, .report-body h3, .report-body h4 {
+    margin-top: 1.2em; margin-bottom: 0.6em; line-height: 1.3; color: var(--color-primary-dark);
+}
+.report-body h1 { font-size: 1.6rem; }
+.report-body h2 { font-size: 1.4rem; }
+.report-body h3 { font-size: 1.2rem; color: var(--color-secondary); }
+.report-body p { margin-bottom: 1em; color: var(--color-text-dark); line-height: 1.6; } /* Darker text in report */
+.report-body ul, .report-body ol { margin-bottom: 1em; padding-left: 25px; }
+.report-body li { margin-bottom: 0.5em; }
+.report-body strong { font-weight: 600; }
+.report-body em { font-style: italic; }
+.report-body code {
+    background-color: #f0f4f8; /* Light background for inline code */
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--color-secondary);
+}
+.report-body pre {
+    background-color: #f8f9fa;
+    padding: 15px; border-radius: 4px; border: 1px solid #eee;
+    max-height: 55vh; overflow-y: auto;
+    font-size: 0.9rem; color: var(--color-text-dark);
+    white-space: pre-wrap; word-wrap: break-word;
+}
+.report-body pre code { /* Code inside pre blocks */
+    background-color: transparent; padding: 0; border-radius: 0; font-size: inherit; color: inherit;
+}
+.report-body hr {
+     border: none; border-top: 1px solid #eee; margin: 2em 0;
+}
+.report-body blockquote {
+    border-left: 4px solid var(--color-background-light);
+    padding-left: 1em; margin: 1em 0; color: var(--color-text-muted); font-style: italic;
+}
+.modal-action-button {
+    background-color: var(--color-secondary); color: white;
+    border: none; padding: 10px 18px; /* Slightly larger padding */
+    border-radius: 5px; cursor: pointer; font-weight: 600;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    margin-bottom: 15px; margin-right: 10px;
+}
+.modal-action-button:hover { background-color: var(--color-primary-dark); }
+.modal-action-button:disabled {
+    background-color: #ccc; cursor: not-allowed; opacity: 0.7;
+}
+
+
+/* --- Responsiveness --- */
+@media (max-width: 992px) {
+    h1 { font-size: 2.5rem; }
+    /* Adjustments as needed */
+}
+
+@media (max-width: 768px) {
+    :root { --header-height: 60px; }
+    body { padding-top: var(--header-height); }
+    html { scroll-padding-top: calc(var(--header-height) + 10px); }
+    h1 { font-size: 2rem; } h2 { font-size: 1.8rem; }
+    section { padding-top: 4rem; padding-bottom: 4rem; }
+    header nav { /* Consider hiding nav or using mobile menu toggle */ }
+    .modal-content { padding: 20px; max-width: 95%; }
+    .modal-content h2 { font-size: 1.4rem; }
+    .modal-close-button { top: 10px; right: 15px; font-size: 1.8rem; }
+    .notification-content span { font-size: 0.9rem; }
+    .notification-button { padding: 6px 14px; font-size: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+    :root { --header-height: 55px; }
+    body { padding-top: var(--header-height); }
+    html { scroll-padding-top: calc(var(--header-height) + 10px); }
+    h1 { font-size: 1.8rem; }
+    .notification-content { flex-direction: column; align-items: flex-start; text-align: left; }
+    .notification-button { margin-top: 10px; align-self: flex-end; }
+    .modal-content { padding: 15px; }
+    .modal-content h2 { font-size: 1.2rem; }
+    .report-body { font-size: 0.95rem; }
+    .report-body pre { font-size: 0.85rem; }
+}
+
+/* === Responsive Fixes === */
+
+/* === Responsive Navigation & Hamburger Menu === */
+
+/* Navbar 基本排版 */
+header nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+}
+
+/* Logo 區域 */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-text {
+    display: inline-block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* Nav Links 區域 */
+.nav-links {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+}
+
+.google-signin {
+    margin-left: 1rem;
+    max-width: 250px;
+}
+
+/* 漢堡選單按鈕 */
+.menu-toggle {
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none; /* 桌面版隱藏 */
+}
+
+/* 手機版樣式 */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        margin-left: auto;
+    }
+
+    .nav-links {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .nav-links.hidden {
+        display: none;
+    }
+
+    .google-signin {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .nav-left {
+        margin-bottom: 0.8rem;
+    }
+}
+
+/* Primary background */
+.bg-primary {
+    background-color: var(--color-accent);
+  }
+  
+  /* Hover background */
+  .hover\:bg-secondary:hover {
+    background-color: var(--color-secondary);
+  }
+
+  .button-cta {
+    background-color: var(--color-accent);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-align: center;
+  }
+  .button-cta:hover {
+    background-color: var(--color-secondary);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  .button-cta:active {
+    transform: scale(0.95);
+  }
+
+  @media (max-width: 768px) {
+    .button-cta {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .menu-link {
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s ease;
+  }
+  
+  .menu-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px; /* 線條距離文字底部的位置 */
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent); /* 用妳的藍色品牌色 */
+    transition: width 0.3s ease;
+  }
+  
+  .menu-link:hover::after {
+    width: 100%;
+  }
+
+/* === Performance Optimizations === */
+.animate-fadeUp {
+    animation: fadeUp 1.2s ease-out forwards;
+    will-change: opacity, transform;
+    opacity: 0; /* ✅ 預設 opacity 0，避免載入時抖動 */
+  }
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 20px 15px;
+    font-size: 0.95rem;
+  }
+  .modal-content h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .modal-content h3 {
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .modal-content p {
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+  .modal-close-button {
+    font-size: 1.8rem;
+    top: 10px;
+    right: 15px;
+  }
+}
+
+.scrolling-prompts > div {
+    margin-bottom: 1.2rem; /* 控制行距 */
+  }
+
+.scrolling-prompts {
+    display: inline-block;
+    animation: scrollUp 15s linear infinite;
+    will-change: transform;
+}
+
+.scrolling-prompts:hover {
+    animation-play-state: paused;
+}
+  
+@keyframes scrollUp {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%); /* 原本內容高度的一半，因為你要複製一份做無縫 */
+    }
+  }
+
+#chat-pointer {
+    cursor: pointer;
+    text-align: center;
+}
+
+#chat-pointer img {
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+#chat-pointer:hover img {
+    transform: scale(1.2);
+    filter: brightness(1.2) saturate(1.5); /* 可調整變色效果 */
+}
+
+@keyframes bounceSmooth {
+    0%, 100% {
+      transform: translateY(0);
+      animation-timing-function: ease-in-out;
+    }
+    50% {
+      transform: translateY(-12px);
+      animation-timing-function: ease-in-out;
+    }
+}
+.bounce-smooth {
+    animation: bounceSmooth 2s infinite;
+}
+
+/* 新增的表格樣式 */
+.report-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  
+  .report-body th,
+  .report-body td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  
+  .report-body th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+  }
+  
+  .report-body tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+/* --- END OF FILE style.css --- */
